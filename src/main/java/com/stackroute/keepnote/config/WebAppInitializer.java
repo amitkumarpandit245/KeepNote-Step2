@@ -2,7 +2,6 @@ package com.stackroute.keepnote.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
 /*This class WebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer
  * class in Servlet 3.0+ environments in order to configure the ServletContext 
  * programmatically -- as opposed to the traditional web.xml-based approach. By overriding the methods of
@@ -14,22 +13,20 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-	
-		return new Class[] {WebMvcConfig.class};
+
+		return new Class[] { ApplicationContextConfig.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-	
-		return new Class[] {};
+
+		return new Class[] { WebMvcConfig.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		
-		return new String[] {"/"};
-	}
 
-	
+		return new String[] { "/" };
+	}
 
 }

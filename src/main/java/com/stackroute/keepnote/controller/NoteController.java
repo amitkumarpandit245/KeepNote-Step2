@@ -1,14 +1,13 @@
 package com.stackroute.keepnote.controller;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.stackroute.keepnote.dao.NoteDAO;
-import com.stackroute.keepnote.model.Note;
 
 /*
  * Annotate the class with @Controller annotation.@Controller annotation is used to mark 
@@ -21,37 +20,35 @@ public class NoteController {
 	 * us to implement the following functionalities.
 	 * 
 	 * 1. display the list of existing notes from the persistence data. Each note
-	 * should contain Note Id, title, content, status and created date. 2. Add a new
-	 * note which should contain the note id, title, content and status. 3. Delete
-	 * an existing note 4. Update an existing note
+	 * should contain Note Id, title, content, status and created date. 
+	 * 2. Add a new note which should contain the note id, title, content and status. 
+	 * 3. Delete an existing note 
+	 * 4. Update an existing note
 	 * 
 	 */
 
 	/*
-	 * Autowiring should be implemented for the NoteDAO. Create a Note object.
+	 * Autowiring should be implemented for the NoteDAO.
+	 * Create a Note object.
 	 * 
 	 */
-	NoteDAO noteDao;
 	@Autowired
-	public NoteController(NoteDAO noteDao) {
-		this.noteDao = noteDao;
+	NoteDAO noteDao;
+	public NoteController (NoteDAO noteDao){
+		this.noteDao=noteDao;
 	}
-	
+
 	/*
 	 * Define a handler method to read the existing notes from the database and add
 	 * it to the ModelMap which is an implementation of Map, used when building
 	 * model data for use with views. it should map to the default URL i.e. "/"
 	 */
-	@RequestMapping("/")
-	public Note displayNotes() {
-		Note note=new Note();
-		note.setNoteId(1);
-		note.setNoteTitle("Java");
-		note.setNoteContent("Welcome To Java");
-		note.setNoteStatus("In Progress");
-		note.setCreatedAt(LocalDateTime.now());
-		return note;
+	@GetMapping("/")
+	public ModelAndView getAllNotes(ModelMap model){
+		model.addAttribute("hello","Welcome To Spring MVC");
+		return new ModelAndView("index",model);
 	}
+
 	/*
 	 * Define a handler method which will read the NoteTitle, NoteContent,
 	 * NoteStatus from request parameters and save the note in note table in

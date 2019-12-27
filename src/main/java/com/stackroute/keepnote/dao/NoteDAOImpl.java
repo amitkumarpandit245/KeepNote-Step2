@@ -1,12 +1,14 @@
 package com.stackroute.keepnote.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stackroute.keepnote.model.Note;
 
@@ -28,9 +30,15 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 	@Autowired
 	private SessionFactory sessionFactory;
+	
 
 	public NoteDAOImpl(SessionFactory sessionFactory) {
-		this.sessionFactory=sessionFactory;
+
+		this.sessionFactory = sessionFactory;
+	}
+	private Session getSession()
+	{
+		return sessionFactory.getCurrentSession();
 	}
 
 	/*
@@ -38,7 +46,9 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 
 	public boolean saveNote(Note note) {
-		return false;
+		Session session=getSession();
+		session.persist(note);
+		return true;
 
 	}
 
@@ -47,7 +57,9 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 
 	public boolean deleteNote(int noteId) {
-		return false;
+		Session session=getSession();
+		session.delete(getNoteById(noteId));
+		return true;
 
 	}
 
@@ -56,7 +68,10 @@ public class NoteDAOImpl implements NoteDAO {
 	 * order(showing latest note first)
 	 */
 	public List<Note> getAllNotes() {
-		return null;
+		Session session=getSession();
+		Query query=session.createQuery("from Note");  //HQL statement
+		List<Note> noteList=query.list();
+		return noteList;
 
 	}
 
@@ -64,13 +79,21 @@ public class NoteDAOImpl implements NoteDAO {
 	 * retrieve specific note from the database(note) table
 	 */
 	public Note getNoteById(int noteId) {
-		return null;
+		Session session=getSession();
+		Note note=session.get(Note.class, noteId);
+		return note;
 
 	}
 
 	/* Update existing note */
 
 	public boolean UpdateNote(Note note) {
+		Session session=getSession();
+		Note temp=session.get(Note.class, note.getNoteId());
+		temp.setNoteTitle(note.getNoteTitle());
+		temp.setNoteStatus(note.getNoteStatus());
+		temp.setNoteContent(note.getNoteContent());
+		temp.setCreatedAt(LocalDateTime.now());
 		return false;
 
 	}
