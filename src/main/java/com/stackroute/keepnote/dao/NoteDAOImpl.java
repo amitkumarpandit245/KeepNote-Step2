@@ -47,7 +47,7 @@ public class NoteDAOImpl implements NoteDAO {
 
 	public boolean saveNote(Note note) {
 		Session session=getSession();
-		session.persist(note);
+		session.save(note);
 		return true;
 
 	}
@@ -80,7 +80,7 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 	public Note getNoteById(int noteId) {
 		Session session=getSession();
-		Note note=session.get(Note.class, noteId);
+		Note note=session.find(Note.class, noteId);
 		return note;
 
 	}
@@ -89,12 +89,8 @@ public class NoteDAOImpl implements NoteDAO {
 
 	public boolean UpdateNote(Note note) {
 		Session session=getSession();
-		Note temp=session.get(Note.class, note.getNoteId());
-		temp.setNoteTitle(note.getNoteTitle());
-		temp.setNoteStatus(note.getNoteStatus());
-		temp.setNoteContent(note.getNoteContent());
-		temp.setCreatedAt(LocalDateTime.now());
-		return false;
+		session.update(note);
+		return true;
 
 	}
 
